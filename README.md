@@ -43,7 +43,7 @@ so new alerts appear without anyone running SQL by hand.
 | `DISTRICT` | 29 districts (admin2), FK → PROVINCE |
 | `MARKET` | 109 markets with latitude/longitude, FK → DISTRICT |
 | `CATEGORY` | Commodity categories (cereals and tubers, pulses and nuts, …) |
-| `COMMODITY` | 54 commodities, FK → CATEGORY |
+| `COMMODITY` | 65 commodities, FK → CATEGORY |
 | `UNIT` | Units of measure (KG, L, …) |
 | `PRICE_OBSERVATION` | One price per market, commodity, unit, price type and month |
 | `EXCHANGE_RATE` | RWF per USD per month (removes the derived `usdprice` column) |
