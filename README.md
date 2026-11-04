@@ -70,4 +70,11 @@ docs/presentation/    Phase 0 slides
 ```
 
 ## References
-See [docs/research/research_log.md](docs/research/research_log.md).
+1. Cuesta, J., Htenas, A., & Tiwari, S. (2014). Monitoring global and national food price crises. *Food Policy, 49*, 84–94. https://doi.org/10.1016/j.foodpol.2014.06.001
+2. Habyarimana, J. B., Munyemana, E., & Impeta, F. B. (2014). Food prices volatility in Rwanda: A VAR model. *World Journal of Agricultural Research, 2*(6), 296–302. https://doi.org/10.12691/wjar-2-6-9
+3. Oracle. (n.d.). DBMS_SCHEDULER. In *Oracle Database PL/SQL packages and types reference* (19c). https://docs.oracle.com/en/database/oracle/oracle-database/19/arpls/DBMS_SCHEDULER.html
+4. Warner, J., Benimana, G. U., Mugabo, S., Niyonsingiza, J., Mukangabo, E., & Ingabire, C. (2024). *Rwandan maize market price dynamics: Structure, trends and policy implications* [Policy brief No. 15]. International Food Policy Research Institute. https://hdl.handle.net/10568/152398
+5. World Food Programme. (n.d.). *HungerMap LIVE*. https://hungermap.wfp.org
+6. World Food Programme. (2026). *Rwanda – Food prices* [Data set]. Humanitarian Data Exchange. https://data.humdata.org/dataset/wfp-food-prices-for-rwanda
+
+Key findings and the gap each source shows: [docs/research/research_log.md](docs/research/research_log.md).
