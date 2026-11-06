@@ -61,12 +61,34 @@ so new alerts appear without anyone running SQL by hand.
 - **Trigger** for the restriction rule (defined in Phase VI): blocks data entry outside the allowed days and logs the denied attempt.
 - **Analytic SQL** (`LAG`, `AVG OVER`): computes trends for the dashboard.
 
+## Phase I – Business Process Modeling
+
+**Selected process:** monthly market price collection, validation and price-spike alert handling.
+On the 15th of each month an enumerator records market prices and hands the sheet to a data entry
+officer, who enters each price through `record_price`. Oracle enforces the restriction rule, validates
+the price, stores it in `PRICE_OBSERVATION` and audits it. A nightly `DBMS_SCHEDULER` job compares each
+price with the previous month and creates a `PRICE_ALERT` when the increase is above the commodity's
+threshold. A food security analyst reviews the alert on the Power BI dashboard. A false alarm leads to a
+price correction. A genuine spike goes to the district agriculture officer, whose action is recorded
+before the alert is closed and later archived.
+
+| | |
+|---|---|
+| **Actors (swimlanes)** | Market Price Enumerator · Data Entry Officer · Price Watch System (Oracle + PL/SQL) · Food Security Analyst · District Agriculture Officer |
+| **Notation** | BPMN 2.0 with swimlanes; tasks coloured by data activity (Create / Retrieve / Update / Delete-Archive) |
+| **Modeling tool** | draw.io (diagrams.net) |
+| **Published diagram** | [Open the diagram in draw.io](https://viewer.diagrams.net/?highlight=0000ff&nav=1&title=business_process_diagram.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Fbrucerut%2Fbruce_28468_foodPriceWatch%2Fmain%2Fdocs%2Fbusiness_process%2Fbusiness_process_diagram.drawio) |
+| **Diagram (PDF)** | [docs/business_process/business_process_diagram.pdf](docs/business_process/business_process_diagram.pdf) |
+| **Editable source** | [docs/business_process/business_process_diagram.drawio](docs/business_process/business_process_diagram.drawio) |
+| **Explanation** | [docs/business_process/business_process_explanation.pdf](docs/business_process/business_process_explanation.pdf) |
+
 ## Repository structure
 ```
-data/                 dataset notes (raw CSV downloaded from HDX)
-docs/research/        research_log.md
-docs/proposal/        proposal (max 2 pages)
-docs/presentation/    Phase 0 slides
+data/                     dataset notes (raw CSV downloaded from HDX)
+docs/research/            research_log.md
+docs/proposal/            proposal (max 2 pages)
+docs/presentation/        Phase 0 slides
+docs/business_process/    Phase I diagram (PDF + draw.io source) and explanation
 ```
 
 ## References
