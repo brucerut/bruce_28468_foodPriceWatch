@@ -1,0 +1,32 @@
+
+CONTAINER                                                                                                                                                                                               
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USERNAME                                                                                                                         RUN_AT                                                                 
+-------------------------------------------------------------------------------------------------------------------------------- -------------------                                                    
+C_28468_BRUCE_PRICEWATCH_DB                                                                                                                                                                             
+BRUCE_ADMIN                                                                                                                      2026-11-15 10:06:37                                                    
+                                                                                                                                                                                                        
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+User altered.
+
+
+DEFAULT_TABLESPACE   TEMPORARY_TABLESPACE                                                                                                                                                               
+-------------------- --------------------                                                                                                                                                               
+PRICEWATCH_DATA      PRICEWATCH_TEMP                                                                                                                                                                    
+
+
+TABLESPACE_NAME      QUOTA                                                                                                                                                                              
+-------------------- ----------                                                                                                                                                                         
+PRICEWATCH_DATA      UNLIMITED                                                                                                                                                                          
+PRICEWATCH_IDX       UNLIMITED                                                                                                                                                                          
+

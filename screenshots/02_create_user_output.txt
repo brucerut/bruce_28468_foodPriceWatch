@@ -1,0 +1,32 @@
+
+Session altered.
+
+
+User altered.
+
+
+Grant succeeded.
+
+
+PL/SQL procedure successfully completed.
+
+
+EM_EXPRESS_HTTPS_PORT                                                                                                                                                                                   
+---------------------                                                                                                                                                                                   
+                 5568                                                                                                                                                                                   
+
+USER is "BRUCE_ADMIN"
+
+CON_NAME                                                                                                                                                                                                
+------------------------------                                                                                                                                                                          
+C_28468_BRUCE_PRICEWATCH_DB                                                                                                                                                                             
+
+USERNAME        CONTAINER                      CONNECTED_AT                                                                                                                                             
+--------------- ------------------------------ -------------------                                                                                                                                      
+BRUCE_ADMIN     C_28468_BRUCE_PRICEWATCH_DB    2026-11-15 10:06:37                                                                                                                                      
+
+
+ROLE       ADM DEF                                                                                                                                                                                      
+---------- --- ---                                                                                                                                                                                      
+DBA        NO  YES                                                                                                                                                                                      
+

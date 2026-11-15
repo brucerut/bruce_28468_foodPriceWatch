@@ -1,0 +1,123 @@
+SQL> 
+SQL> -- 0. Who, where and when
+SQL> COLUMN username  FORMAT A15
+SQL> COLUMN container FORMAT A30
+SQL> SELECT USER				      AS username,
+  2  	    SYS_CONTEXT('USERENV', 'CON_NAME')	      AS container,
+  3  	    TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') AS verified_at
+  4  FROM   dual;
+
+USERNAME        CONTAINER                      VERIFIED_AT                                                                                                                                                                            
+--------------- ------------------------------ -------------------                                                                                                                                                                    
+BRUCE_ADMIN     C_28468_BRUCE_PRICEWATCH_DB    2026-11-15 10:09:25                                                                                                                                                                    
+
+1 row selected.
+
+SQL> 
+SQL> -- 1. The PDB exists and is open (and its state is saved for restarts)
+SQL> COLUMN pdb_name	FORMAT A30
+SQL> COLUMN open_mode	FORMAT A12
+SQL> COLUMN restricted	FORMAT A10
+SQL> SELECT con_id, name AS pdb_name, open_mode, restricted,
+  2  	    TO_CHAR(open_time, 'YYYY-MM-DD HH24:MI:SS') AS opened_at
+  3  FROM   v$pdbs;
+
+    CON_ID PDB_NAME                       OPEN_MODE    RESTRICTED OPENED_AT                                                                                                                                                           
+---------- ------------------------------ ------------ ---------- -------------------                                                                                                                                                 
+         4 C_28468_BRUCE_PRICEWATCH_DB    READ WRITE   NO         2026-11-15 10:07:34                                                                                                                                                 
+
+1 row selected.
+
+SQL> 
+SQL> -- 2. The admin user's default and temporary tablespaces
+SQL> COLUMN default_tablespace	 FORMAT A20
+SQL> COLUMN temporary_tablespace FORMAT A20
+SQL> COLUMN account_status	 FORMAT A15
+SQL> SELECT username, default_tablespace, temporary_tablespace, account_status
+  2  FROM   dba_users
+  3  WHERE  username = 'BRUCE_ADMIN';
+
+USERNAME        DEFAULT_TABLESPACE   TEMPORARY_TABLESPACE ACCOUNT_STATUS                                                                                                                                                              
+--------------- -------------------- -------------------- ---------------                                                                                                                                                             
+BRUCE_ADMIN     PRICEWATCH_DATA      PRICEWATCH_TEMP      OPEN                                                                                                                                                                        
+
+1 row selected.
+
+SQL> 
+SQL> COLUMN grantee FORMAT A15
+SQL> COLUMN granted_role FORMAT A12
+SQL> SELECT grantee, granted_role
+  2  FROM   dba_role_privs
+  3  WHERE  grantee = 'BRUCE_ADMIN' AND granted_role = 'DBA';
+
+GRANTEE         GRANTED_ROLE                                                                                                                                                                                                          
+--------------- ------------                                                                                                                                                                                                          
+BRUCE_ADMIN     DBA                                                                                                                                                                                                                   
+
+1 row selected.
+
+SQL> 
+SQL> COLUMN quota FORMAT A10
+SQL> SELECT username, tablespace_name,
+  2  	    CASE max_bytes WHEN -1 THEN 'UNLIMITED' ELSE TO_CHAR(max_bytes) END AS quota
+  3  FROM   dba_ts_quotas
+  4  WHERE  username = 'BRUCE_ADMIN'
+  5  ORDER  BY tablespace_name;
+
+USERNAME        TABLESPACE_NAME                QUOTA                                                                                                                                                                                  
+--------------- ------------------------------ ----------                                                                                                                                                                             
+BRUCE_ADMIN     PRICEWATCH_DATA                UNLIMITED                                                                                                                                                                              
+BRUCE_ADMIN     PRICEWATCH_IDX                 UNLIMITED                                                                                                                                                                              
+
+2 rows selected.
+
+SQL> 
+SQL> -- 3. Each project tablespace with its size, autoextend and maximum size
+SQL> COLUMN tablespace_name FORMAT A16
+SQL> COLUMN contents	    FORMAT A10
+SQL> COLUMN file_name	    FORMAT A90
+SQL> SELECT t.tablespace_name, t.contents,
+  2  	    f.bytes / 1024 / 1024			  AS size_mb,
+  3  	    f.autoextensible,
+  4  	    f.increment_by * t.block_size / 1024 / 1024   AS next_mb,
+  5  	    f.maxbytes / 1024 / 1024			  AS max_mb,
+  6  	    f.file_name
+  7  FROM   dba_tablespaces t
+  8  JOIN  (SELECT tablespace_name, file_name, bytes, autoextensible, increment_by, maxbytes FROM dba_data_files
+  9  	    UNION ALL
+ 10  	    SELECT tablespace_name, file_name, bytes, autoextensible, increment_by, maxbytes FROM dba_temp_files) f
+ 11  	    ON f.tablespace_name = t.tablespace_name
+ 12  WHERE  t.tablespace_name LIKE 'PRICEWATCH%'
+ 13  ORDER  BY t.tablespace_name;
+
+TABLESPACE_NAME  CONTENTS      SIZE_MB AUT    NEXT_MB     MAX_MB FILE_NAME                                                                                                                                                            
+---------------- ---------- ---------- --- ---------- ---------- ------------------------------------------------------------------------------------------                                                                           
+PRICEWATCH_DATA  PERMANENT         100 YES         10       1024 C:\APP\ENVY\PRODUCT\21C\ORADATA\XE\C_28468_BRUCE_PRICEWATCH_DB\PRICEWATCH_DATA01.DBF                                                                                 
+PRICEWATCH_IDX   PERMANENT          50 YES         10        500 C:\APP\ENVY\PRODUCT\21C\ORADATA\XE\C_28468_BRUCE_PRICEWATCH_DB\PRICEWATCH_IDX01.DBF                                                                                  
+PRICEWATCH_TEMP  TEMPORARY          50 YES         10        500 C:\APP\ENVY\PRODUCT\21C\ORADATA\XE\C_28468_BRUCE_PRICEWATCH_DB\PRICEWATCH_TEMP01.DBF                                                                                 
+
+3 rows selected.
+
+SQL> 
+SQL> -- 4. The archive log mode of the database (a CDB-wide setting)
+SQL> COLUMN cdb_name FORMAT A10
+SQL> SELECT name AS cdb_name, log_mode FROM v$database;
+
+CDB_NAME   LOG_MODE                                                                                                                                                                                                                   
+---------- ------------                                                                                                                                                                                                               
+XE         ARCHIVELOG                                                                                                                                                                                                                 
+
+1 row selected.
+
+SQL> 
+SQL> -- 5. EM Express HTTPS port for this PDB (Task 5)
+SQL> SELECT DBMS_XDB_CONFIG.GETHTTPSPORT() AS em_express_https_port FROM dual;
+
+EM_EXPRESS_HTTPS_PORT                                                                                                                                                                                                                 
+---------------------                                                                                                                                                                                                                 
+                 5568                                                                                                                                                                                                                 
+
+1 row selected.
+
+SQL> 
+SQL> SPOOL OFF

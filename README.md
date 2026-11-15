@@ -104,11 +104,40 @@ relationship between prices and flags.
 
 ![Logical ERD](docs/design/erd.png)
 
+## Phase III – Database (PDB) Creation
+
+Built on Oracle Database 21c Express Edition (CDB `XE`) on my local machine.
+
+| Item | Value |
+|---|---|
+| Pluggable database | `c_28468_bruce_pricewatch_db` (27 characters; "foodpricewatch" shortened to "pricewatch" to stay within 30). Open READ WRITE, state saved |
+| Admin user | `bruce_admin` with the DBA role (lab-only password = first name, as the brief requires) |
+| Data tablespace | `pricewatch_data`: 100M, AUTOEXTEND ON NEXT 10M MAXSIZE 1G (user default) |
+| Index tablespace | `pricewatch_idx`: 50M, AUTOEXTEND ON NEXT 10M MAXSIZE 500M |
+| Temporary tablespace | `pricewatch_temp`: 50M, AUTOEXTEND ON NEXT 10M MAXSIZE 500M (user temporary) |
+| Quota | UNLIMITED on `pricewatch_data` and `pricewatch_idx` |
+| Archive log mode | ARCHIVELOG (enabled on the local install only; it is a CDB-wide setting, see `04_archive_log.sql`) |
+| EM Express | https://localhost:5568/em (55 + last two digits of 28468) |
+
+Run the scripts in order from the repository root:
+
+```
+sqlplus /nolog @database/setup/01_create_pdb.sql    -- SYSDBA: create, open, save state
+sqlplus /nolog @database/setup/02_create_user.sql   -- SYSDBA: DBA role, EM port, test login
+sqlplus /nolog @database/setup/03_tablespaces.sql   -- bruce_admin: tablespaces, defaults, quotas
+sqlplus /nolog @database/setup/04_archive_log.sql   -- SYSDBA: show mode; enable ARCHIVELOG (local only)
+sqlplus /nolog @database/setup/05_verify.sql        -- bruce_admin: verification queries
+```
+
+Each script spools its output to [screenshots/](screenshots/). EM Express screenshots are in the same folder.
+
 ## Repository structure
 ```
 data/raw/                 raw WFP CSV files, exactly as downloaded
 data/dataset_card.md      source, licence, size and data quality report
 docs/design/              Phase II normalization, ERD and data dictionary
+database/setup/           Phase III SQL scripts 01-05 (PDB, user, tablespaces, archive log, verify)
+screenshots/              Phase III query output and EM Express screenshots
 docs/research/            research_log.md
 docs/proposal/            proposal (max 2 pages)
 docs/presentation/        Phase 0 slides

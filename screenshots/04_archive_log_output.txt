@@ -1,0 +1,61 @@
+
+CHECKED_AT          CDB_NAME  LOG_MODE                                                                                                                                                                  
+------------------- --------- ------------                                                                                                                                                              
+2026-11-15 10:06:46 XE        NOARCHIVELOG                                                                                                                                                              
+
+Database log mode              No Archive Mode
+Automatic archival             Disabled
+Archive destination            C:\app\Envy\product\21c\homes\OraDB21Home2\RDBMS
+Oldest online log sequence     26
+Current log sequence           28
+
+
+System altered.
+
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+ORACLE instance started.
+
+Total System Global Area 1610610072 bytes                                                                                                                                                               
+Fixed Size                  9856408 bytes                                                                                                                                                               
+Variable Size             989855744 bytes                                                                                                                                                               
+Database Buffers          603979776 bytes                                                                                                                                                               
+Redo Buffers                6918144 bytes                                                                                                                                                               
+Database mounted.
+
+Database altered.
+
+
+Database altered.
+
+
+Pluggable database altered.
+
+
+CHECKED_AT          CDB_NAME  LOG_MODE                                                                                                                                                                  
+------------------- --------- ------------                                                                                                                                                              
+2026-11-15 10:07:38 XE        ARCHIVELOG                                                                                                                                                                
+
+Database log mode              Archive Mode
+Automatic archival             Enabled
+Archive destination            C:\app\Envy\product\21c\oradata\XE\ARCHIVELOG
+Oldest online log sequence     26
+Next log sequence to archive   28
+Current log sequence           28
+
+System altered.
+
+
+ SEQUENCE# NAME                                                                             ARCHIVED_AT                                                                                                 
+---------- -------------------------------------------------------------------------------- -------------------                                                                                         
+        28 C:\APP\ENVY\PRODUCT\21C\ORADATA\XE\ARCHIVELOG\ARC0000000028_1244553765.0001      2026-11-15 10:07:39                                                                                         
+
+
+PDB_NAME                       OPEN_MODE                                                                                                                                                                
+------------------------------ ----------                                                                                                                                                               
+PDB$SEED                       READ ONLY                                                                                                                                                                
+XEPDB1                         READ WRITE                                                                                                                                                               
+C_28468_BRUCE_PRICEWATCH_DB    READ WRITE                                                                                                                                                               
+RU_PDB_28468                   READ WRITE                                                                                                                                                               
+
