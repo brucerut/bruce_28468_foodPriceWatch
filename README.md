@@ -28,7 +28,7 @@ normalized form and automatically detects and reports abnormal price increases.
 
 ## Data source
 WFP – World Food Programme (2026). *Rwanda – Food Prices* [Data set]. Humanitarian Data Exchange.
-https://data.humdata.org/dataset/wfp-food-prices-for-rwanda. Licence: CC BY-IGO. See [data/README.md](data/README.md).
+https://data.humdata.org/dataset/wfp-food-prices-for-rwanda. Licence: CC BY-IGO. See the [dataset card](data/dataset_card.md).
 
 ## Innovation
 **Option:** Analytics dashboard · **Tool:** Power BI (connected live to Oracle).
@@ -40,7 +40,7 @@ so new alerts appear without anyone running SQL by hand.
 | Table | Purpose |
 |---|---|
 | `PROVINCE` | 5 provinces (admin1) |
-| `DISTRICT` | 29 districts (admin2), FK → PROVINCE |
+| `DISTRICT` | 30 districts (admin2), FK → PROVINCE |
 | `MARKET` | 109 markets with latitude/longitude, FK → DISTRICT |
 | `CATEGORY` | Commodity categories (cereals and tubers, pulses and nuts, …) |
 | `COMMODITY` | 65 commodities, FK → CATEGORY |
@@ -82,9 +82,33 @@ before the alert is closed and later archived.
 | **Editable source** | [docs/business_process/business_process_diagram.drawio](docs/business_process/business_process_diagram.drawio) |
 | **Explanation** | [docs/business_process/business_process_explanation.pdf](docs/business_process/business_process_explanation.pdf) |
 
+## Phase II – Data Sourcing, Normalization and Logical Design
+
+The raw WFP files are kept unedited in `data/raw/` (157,793 price rows and 320 markets, with SHA-256
+checksums in the dataset card). A full quality check found 0 missing values, 0 duplicates and 0
+invalid dates, plus 15 issues that are counted but left unfixed until Phase IV. The main ones:
+6,520 non-atomic `actual,aggregate` flags, 2,246 rows with a placeholder district (Gisenyi), a
+constant `currency` column, and a derived, rounded `usdprice`.
+
+Normalizing UNF → 1NF → 2NF → 3NF with real rows gives **14 tables**: 11 hold the data from the raw
+files and 3 support the PL/SQL rules. A junction table, OBSERVATION_FLAG, resolves the many-to-many
+relationship between prices and flags.
+
+| Deliverable | File |
+|---|---|
+| Dataset card (source, licence, size, record meaning, quality counts) | [data/dataset_card.md](data/dataset_card.md) |
+| Raw data (never edited) | [data/raw/](data/raw/) |
+| Normalization, step by step, with a traced record | [docs/design/normalization.md](docs/design/normalization.md) |
+| Logical ERD, crow's-foot ([editable source](docs/design/erd.drawio)) | [docs/design/erd.png](docs/design/erd.png) |
+| Data dictionary + source-to-target mapping | [docs/design/data_dictionary.md](docs/design/data_dictionary.md) |
+
+![Logical ERD](docs/design/erd.png)
+
 ## Repository structure
 ```
-data/                     dataset notes (raw CSV downloaded from HDX)
+data/raw/                 raw WFP CSV files, exactly as downloaded
+data/dataset_card.md      source, licence, size and data quality report
+docs/design/              Phase II normalization, ERD and data dictionary
 docs/research/            research_log.md
 docs/proposal/            proposal (max 2 pages)
 docs/presentation/        Phase 0 slides
