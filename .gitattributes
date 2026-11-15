@@ -1,0 +1,2 @@
+# Raw data must be stored byte-for-byte as downloaded (no line-ending conversion)
+data/raw/** -text
